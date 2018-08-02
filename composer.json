@@ -24,9 +24,7 @@
     ],
     "scripts": {
         "check": [
-            "php-cs-fixer fix --ansi --dry-run --diff",
-            "phpcs --report-width=200 --report-summary  --report-full samples/ src/ tests/ --ignore=samples/Header.php --standard=PSR2 -n",
-            "phpunit --color=always"
+            "php-cs-fixer fix --ansi --dry-run --diff"
         ],
         "fix": [
             "php-cs-fixer fix --ansi"
@@ -58,6 +56,9 @@
         "jpgraph/jpgraph": "^4.0",
         "friendsofphp/php-cs-fixer": "@stable"
     },
+    "archive": {
+        "exclude": ["/.git/"]
+    },
     "suggest": {
         "mpdf/mpdf": "Option for rendering PDF with PDF Writer",
         "dompdf/dompdf": "Option for rendering PDF with PDF Writer",
@@ -67,11 +68,6 @@
     "autoload": {
         "psr-4": {
             "PhpOffice\\PhpSpreadsheet\\": "src/PhpSpreadsheet"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "PhpOffice\\PhpSpreadsheetTests\\": "tests/PhpSpreadsheetTests"
         }
     }
 }
