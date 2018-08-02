@@ -2966,7 +2966,7 @@ class Worksheet implements IComparable
                     $newCollection = new ArrayObject();
                     foreach ($this->drawingCollection as $id => $item) {
                         if (is_object($item)) {
-                            $newCollection[$id] = clone $this->drawingCollection[$id];
+                            $newCollection[$id] = unserialize(serialize($this->drawingCollection[$id]));
                         }
                     }
                     $this->drawingCollection = $newCollection;
