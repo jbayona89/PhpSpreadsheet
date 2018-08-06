@@ -2113,6 +2113,22 @@ class Worksheet implements IComparable
     public function removeRow($pRow, $pNumRows = 1)
     {
         if ($pRow >= 1) {
+            // Unmerge cells first to avoid corrupted excel
+            $rowIterator = $this->getRowIterator($pRow,$pRow+$pNumRows);
+            foreach($rowIterator as $row) {
+                $cellIterator = $row->getCellIterator();
+                try{
+                    $cellIterator->setIterateOnlyExistingCells(true);
+                    foreach ($cellIterator as $cell) {
+                        if ($cell->isMergeRangeValueCell()) {
+                            $this->unmergeCells($cell->getMergeRange());
+                        }
+                    }
+                }catch (\Exception $e) {
+                    unset($e);
+                }
+            }
+            // Original removeRow
             $highestRow = $this->getHighestDataRow();
             $objReferenceHelper = ReferenceHelper::getInstance();
             $objReferenceHelper->insertNewBefore('A' . ($pRow + $pNumRows), 0, -$pNumRows, $this);
