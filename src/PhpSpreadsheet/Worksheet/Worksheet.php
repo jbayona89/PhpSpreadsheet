@@ -2128,6 +2128,10 @@ class Worksheet implements IComparable
                     unset($e);
                 }
             }
+            // Keep the new's row height
+            for($i = 0;$i<$pNumRows; $i++) {
+                $this->getRowDimension($pRow+$i)->setRowHeight($this->getRowDimension($pRow+$pNumRows+$i)->getRowHeight());
+            }
             // Original removeRow
             $highestRow = $this->getHighestDataRow();
             $objReferenceHelper = ReferenceHelper::getInstance();
