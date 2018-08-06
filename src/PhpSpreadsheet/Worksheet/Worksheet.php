@@ -2150,7 +2150,7 @@ class Worksheet implements IComparable
      * @param int $to row that will receive the copy
      * @return void
      */
-    private function copyRow($from, $to) {
+    public function copyRow($from, $to) {
         $this->getRowDimension($to)->setRowHeight($this->getRowDimension($from)->getRowHeight());
         $fromRowCellIterator = $this->getRowIterator($from,$from)->current()->getCellIterator();
         try {
