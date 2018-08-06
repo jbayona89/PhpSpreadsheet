@@ -2114,7 +2114,7 @@ class Worksheet implements IComparable
     {
         if ($pRow >= 1) {
             // Unmerge cells first to avoid corrupted excel
-            $rowIterator = $this->getRowIterator($pRow,$pRow+$pNumRows);
+            $rowIterator = $this->getRowIterator($pRow,$pRow+$pNumRows-1);
             foreach($rowIterator as $row) {
                 $cellIterator = $row->getCellIterator();
                 try{
