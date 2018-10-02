@@ -5,11 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased]
+## [1.4.1] - 2018-09-30
+
+### Fixed
+
+- Remove locale from formatting string - [#644](https://github.com/PHPOffice/PhpSpreadsheet/pull/644)
+- Allow iterators to go out of bounds with prev - [#587](https://github.com/PHPOffice/PhpSpreadsheet/issues/587)
+- Fix warning when reading xlsx without styles - [#631](https://github.com/PHPOffice/PhpSpreadsheet/pull/631)
+- Fix broken sample links on windows due to $baseDir having backslash - [#653](https://github.com/PHPOffice/PhpSpreadsheet/pull/653)
+
+## [1.4.0] - 2018-08-06
 
 ### Added
 
-- Add excel function EXACT(value1, value2) support - [595](https://github.com/PHPOffice/PhpSpreadsheet/pull/595)
+- Add excel function EXACT(value1, value2) support - [#595](https://github.com/PHPOffice/PhpSpreadsheet/pull/595)
 - Support workbook view attributes for Xlsx format - [#523](https://github.com/PHPOffice/PhpSpreadsheet/issues/523)
 - Read and write hyperlink for drawing image - [#490](https://github.com/PHPOffice/PhpSpreadsheet/pull/490)
 - Added calculation engine support for the new bitwise functions that were added in MS Excel 2013
@@ -65,6 +74,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Could not open CSV file containing HTML fragment - [#564](https://github.com/PHPOffice/PhpSpreadsheet/issues/564)
 - Exclude the vendor folder in migration - [#481](https://github.com/PHPOffice/PhpSpreadsheet/issues/481)
 - Chained operations on cell ranges involving borders operated on last cell only [#428](https://github.com/PHPOffice/PhpSpreadsheet/issues/428)
+- Avoid memory exhaustion when cloning worksheet with a drawing [#437](https://github.com/PHPOffice/PhpSpreadsheet/issues/437)
+- Migration tool keep variables containing $PHPExcel untouched [#598](https://github.com/PHPOffice/PhpSpreadsheet/issues/598)
+- Rowspans/colspans were incorrect when adding worksheet using loadIntoExisting [#619](https://github.com/PHPOffice/PhpSpreadsheet/issues/619)
 
 ## [1.3.1] - 2018-06-12
 

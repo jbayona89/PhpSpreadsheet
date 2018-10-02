@@ -2113,26 +2113,6 @@ class Worksheet implements IComparable
     public function removeRow($pRow, $pNumRows = 1)
     {
         if ($pRow >= 1) {
-            // Unmerge cells first to avoid corrupted excel
-            $rowIterator = $this->getRowIterator($pRow,$pRow+$pNumRows-1);
-            foreach($rowIterator as $row) {
-                $cellIterator = $row->getCellIterator();
-                try{
-                    $cellIterator->setIterateOnlyExistingCells(true);
-                    foreach ($cellIterator as $cell) {
-                        if ($cell->isMergeRangeValueCell()) {
-                            $this->unmergeCells($cell->getMergeRange());
-                        }
-                    }
-                }catch (\Exception $e) {
-                    unset($e);
-                }
-            }
-            // Keep the new's row height
-            for($i = 0;$i<$pNumRows; $i++) {
-                $this->getRowDimension($pRow+$i)->setRowHeight($this->getRowDimension($pRow+$pNumRows+$i)->getRowHeight());
-            }
-            // Original removeRow
             $highestRow = $this->getHighestDataRow();
             $objReferenceHelper = ReferenceHelper::getInstance();
             $objReferenceHelper->insertNewBefore('A' . ($pRow + $pNumRows), 0, -$pNumRows, $this);
@@ -2145,36 +2125,6 @@ class Worksheet implements IComparable
         }
 
         return $this;
-    }
-
-    /**
-     * Copy a row, including style, data and height
-     *
-     * @param int $from row that will be copied
-     * @param int $to row that will receive the copy
-     * @return void
-     */
-    public function copyRow($from, $to) {
-        $this->getRowDimension($to)->setRowHeight($this->getRowDimension($from)->getRowHeight());
-        $fromRowCellIterator = $this->getRowIterator($from,$from)->current()->getCellIterator();
-        try {
-          $fromRowCellIterator->setIterateOnlyExistingCells(true);
-          foreach ($fromRowCellIterator as $fromCellIt) {
-            $fromCoordinates = $fromCellIt->getCoordinate();
-            $toCellCoordinates = $fromCellIt->getColumn().$to;
-            // Cache data as trying to save the cells as variables doesn't work
-            $style = $this->getCell($fromCoordinates)->getStyle();
-            $value = $this->getCell($fromCoordinates)->getValue();
-            $dataType = $this->getCell($fromCoordinates)->getDataType();
-            // Copy data and style
-            $toCell = $this->getCell($toCellCoordinates);
-            $toCell->setValue($value);
-            $toCell->setDataType($dataType);
-            $this->duplicateStyle($style,$toCellCoordinates);
-          }
-        } catch (\Exception $e) {
-          unset($e); // Do nothing, the row was empty
-        }
     }
 
     /**
@@ -3013,13 +2963,14 @@ class Worksheet implements IComparable
                     $newCollection = $this->cellCollection->cloneCellCollection($this);
                     $this->cellCollection = $newCollection;
                 } elseif ($key == 'drawingCollection') {
-                    $newCollection = new ArrayObject();
-                    foreach ($this->drawingCollection as $id => $item) {
+                    $currentCollection = $this->drawingCollection;
+                    $this->drawingCollection = new ArrayObject();
+                    foreach ($currentCollection as $item) {
                         if (is_object($item)) {
-                            $newCollection[$id] = unserialize(serialize($this->drawingCollection[$id]));
+                            $newDrawing = clone $item;
+                            $newDrawing->setWorksheet($this);
                         }
                     }
-                    $this->drawingCollection = $newCollection;
                 } elseif (($key == 'autoFilter') && ($this->autoFilter instanceof AutoFilter)) {
                     $newAutoFilter = clone $this->autoFilter;
                     $this->autoFilter = $newAutoFilter;
